@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문화·예술 창업 아이디어 만들기</title>
+<style>
+  :root{
+    --bg:#f4f6fb; --panel:#ffffff; --chip:#eef1f7; --chipbd:#d5dbe6;
+    --c1:#7c3aed; --c1b:#ede9fe; --c2:#0ea5e9; --c2b:#e0f2fe;
+    --c3:#f97316; --c3b:#ffedd5; --c4:#ec4899; --c4b:#fce7f3;
+    --text:#1e293b; --muted:#64748b; --line:#e2e8f0;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+    background:var(--bg);color:var(--text);min-height:100vh;padding:18px 22px 50px;}
+  .wrap{max-width:1400px;margin:0 auto;}
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+  h1{font-size:clamp(20px,2.4vw,28px);margin:0;letter-spacing:-.5px;}
+  .lead{font-size:13px;color:var(--muted);margin:2px 0 0;}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;}
+  button{font-family:inherit;font-weight:800;border:none;border-radius:12px;cursor:pointer;transition:.12s;}
+  .btn-rand{background:var(--c3);color:#fff;padding:13px 24px;font-size:16px;box-shadow:0 3px 10px rgba(249,115,22,.3);}
+  .btn-reset{background:#fff;color:var(--text);border:1.5px solid var(--chipbd);padding:13px 20px;font-size:15px;}
+  .btn-rand:active,.btn-reset:active{transform:scale(.97);}
+
+  .cat{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:12px 16px 14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(15,23,42,.04);}
+  .cat.locked{box-shadow:0 0 0 2.5px var(--lockcol,#94a3b8) inset;}
+  .cat-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .cat-head .ic{font-size:22px;}
+  .cat-head .ti{font-size:16px;font-weight:800;}
+  .cat-head .de{font-size:12px;color:var(--muted);background:var(--chip);padding:2px 9px;border-radius:20px;}
+  .lockbtn{margin-left:auto;font-size:13px;font-weight:800;border:1.5px solid var(--chipbd);
+    background:#fff;color:var(--muted);border-radius:20px;padding:7px 14px;}
+  .cat.locked .lockbtn{background:var(--lockcol);color:#fff;border-color:var(--lockcol);}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{background:var(--chip);border:1.5px solid transparent;border-radius:11px;
+    padding:11px 14px;font-size:15px;font-weight:600;color:var(--text);line-height:1.2;min-height:44px;}
+  .chip:active{transform:scale(.96);}
+
+  .k1{--ac:var(--c1);--acb:var(--c1b);} .k2{--ac:var(--c2);--acb:var(--c2b);}
+  .k3{--ac:var(--c3);--acb:var(--c3b);} .k4{--ac:var(--c4);--acb:var(--c4b);}
+  .cat .cat-head .ti{color:var(--ac);}
+  .chip.sel{background:var(--ac);color:#fff;border-color:var(--ac);box-shadow:0 2px 8px rgba(0,0,0,.15);}
+  .chip.custom{border:1.5px dashed var(--ac);}
+  .chip.custom.sel{border-style:solid;}
+  .freerow{display:flex;gap:7px;margin-top:10px;}
+  .freeinp{flex:1;padding:10px 12px;border:1.5px dashed var(--chipbd);border-radius:11px;
+    font-family:inherit;font-size:14px;background:#fff;color:var(--text);min-height:42px;}
+  .freeinp:focus{outline:none;border-color:var(--ac);}
+  .freebtn{background:var(--ac);color:#fff;border:none;border-radius:11px;padding:0 18px;
+    font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;min-height:42px;}
+
+  .result{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px;}
+  @media(max-width:900px){.result{grid-template-columns:1fr;}}
+  .prompt{background:linear-gradient(135deg,#faf5ff,#eff6ff);border:1px solid var(--line);
+    border-radius:16px;padding:20px;}
+  .prompt h2{margin:0 0 12px;font-size:15px;color:var(--c3);}
+  .prompt p{font-size:clamp(16px,1.7vw,20px);line-height:1.6;margin:0;font-weight:700;}
+  .hl1{color:var(--c1);} .hl2{color:var(--c2);} .hl3{color:var(--c3);} .hl4{color:var(--c4);}
+  .hint{color:var(--muted);font-size:15px;text-align:center;padding:14px;font-weight:600;}
+
+  .work{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;}
+  .work h2{margin:0 0 14px;font-size:15px;color:var(--muted);}
+  .step{border-left:3px solid var(--line);padding:2px 0 16px 15px;margin-left:6px;position:relative;}
+  .step:last-child{padding-bottom:0;}
+  .step .n{position:absolute;left:-13px;top:0;width:24px;height:24px;border-radius:50%;
+    background:var(--c1);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .step h3{margin:0 0 3px;font-size:15px;}
+  .step p{margin:0 0 8px;font-size:13px;color:var(--muted);line-height:1.5;}
+  textarea{width:100%;background:#f8fafc;border:1.5px solid var(--line);border-radius:10px;
+    color:var(--text);padding:10px;font-family:inherit;font-size:14px;resize:vertical;min-height:48px;}
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:18px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>🎨 문화·예술 창업 아이디어 만들기</h1>
+      <p class="lead">마음에 드는 칸은 <b>🔒 고정</b>하고, <b>랜덤 돌리기</b>로 나머지만 다시 뽑아보세요. 카드는 출발점일 뿐, 얼마든지 바꿔도 돼요!</p>
+    </div>
+    <div class="toolbar">
+      <button class="btn-rand" onclick="randomize()">🎲 랜덤 돌리기</button>
+      <button class="btn-reset" onclick="resetAll()">모두 지우기</button>
+    </div>
+  </header>
+
+  <div id="cats"></div>
+
+  <div class="result">
+    <div class="prompt" id="promptBox">
+      <h2>📝 오늘의 아이디어 미션</h2>
+      <p id="promptText" class="hint">네 칸을 모두 고르면 여기에 미션이 나타나요.</p>
+    </div>
+    <div class="work" id="workBox" style="display:none;">
+      <h2>이 조합으로 아이디어 발전시키기</h2>
+      <div class="step"><span class="n">1</span><h3>아이디어 떠올리기</h3>
+        <p id="q1"></p><textarea placeholder="이 조합으로 만들 수 있는 콘텐츠나 서비스를 자유롭게 상상해서 적어보세요."></textarea></div>
+      <div class="step"><span class="n">2</span><h3>누구에게, 왜 필요할까?</h3>
+        <p id="q2"></p><textarea placeholder="대상이 이걸 왜 좋아할까? 사회에 어떤 도움이 될까?"></textarea></div>
+      <div class="step"><span class="n">3</span><h3>뭐가 특별한가?</h3>
+        <p id="q3"></p><textarea placeholder="기존에 있던 것과 다른 점, 새로운 점은?"></textarea></div>
+      <div class="step"><span class="n">4</span><h3>구체적으로 기획하기</h3>
+        <p id="q4"></p><textarea placeholder="서비스 이름 + 핵심 내용 + 어떻게 알리고 돈을 벌지 적어보세요."></textarea></div>
+    </div>
+  </div>
+
+  <p class="foot">인쇄해서 학습지로 써도 좋아요. · 고른 칩을 다시 누르면 선택이 해제됩니다.</p>
+</div>
+
+<script>
+const LOCKCOL=["#7c3aed","#0ea5e9","#f97316","#ec4899"];
+const CATS = [
+  {cls:"k1",icon:"🎭",title:"문화·예술 분야",desc:"무엇을",list:[
+    "음악·작곡","K-pop·아이돌","댄스·안무","힙합·랩","밴드·인디음악","미술·전시","사진","영화·영상",
+    "뮤직비디오","웹툰·만화","웹소설","애니메이션","게임 스토리","연극·공연","뮤지컬","무용·춤",
+    "방송·예능","팬덤·굿즈 문화","패션·스타일","뷰티·메이크업","먹방·푸드 콘텐츠","공예·핸드메이드",
+    "일러스트·디자인","캘리그라피·서예","국악·판소리","전통문화(한복·한옥)","축제·행사","도예·조각"]},
+  {cls:"k2",icon:"✨",title:"소재·기술·사회 이슈",desc:"무엇과 결합",list:[
+    "AI 인공지능","VR·가상현실","드론","3D 프린터","재활용 폐품","음식·요리","반려동물","운동·스포츠",
+    "우주·별자리","로봇","SNS·숏폼","향기·향수","소리·ASMR","지역 특산물","코딩·앱","빛·조명",
+    "🌱 환경·기후위기","🤝 외로움·고립","👵 노인 소외","♿ 장애인 접근성","🏚️ 사라지는 마을",
+    "🌏 다문화·이주민","💙 마음건강·스트레스","📦 음식물 쓰레기","🎗️ 세대 갈등","⚖️ 공정·차별",
+    "🧸 추억·기억","🕊️ 재난·안전"]},
+  {cls:"k3",icon:"🙋",title:"누구를 위해",desc:"대상",list:[
+    "초등학생","중·고등학생","20대 청년","어르신","외국인 관광객","반려인","바쁜 직장인","아기와 부모",
+    "우리 지역 주민","몸이 불편한 사람","게임 좋아하는 사람","K-컬처 팬","예술을 어려워하는 사람",
+    "병원의 환자","시골·섬에 사는 사람","커플·친구","혼자 즐기는 사람","선생님과 학교","환경에 관심 많은 사람","MZ 세대"]},
+  {cls:"k4",icon:"🚀",title:"어떻게 사업화?",desc:"사업·전달 방식",list:[
+    "스마트폰 앱·플랫폼","유튜브·숏폼 채널","온라인 정기 구독","체험 클래스·워크숍","팝업 전시·행사",
+    "굿즈·상품 판매","축제·페스티벌 기획","공유 작업실·공간","SNS 챌린지","AI 자동 제작 서비스",
+    "지역 관광 상품","정기 배송 박스","콜라보(협업)","크라우드펀딩","무료+광고 모델",
+    "오프라인 매장·카페","교육 프로그램","구독형 커뮤니티","게임·앱 콘텐츠","라이브 스트리밍"]}
+];
+
+let picks=[null,null,null,null];
+let locked=[false,false,false,false];
+const catsEl=document.getElementById('cats');
+
+CATS.forEach((cat,ci)=>{
+  const sec=document.createElement('section');
+  sec.className='cat '+cat.cls;
+  sec.style.setProperty('--lockcol',LOCKCOL[ci]);
+  sec.innerHTML=`<div class="cat-head"><span class="ic">${cat.icon}</span>
+    <span class="ti">${cat.title}</span><span class="de">${cat.desc}</span>
+    <button class="lockbtn" onclick="toggleLock(${ci})">🔓 열림</button></div>
+    <div class="chips"></div>
+    <div class="freerow">
+      <input class="freeinp" type="text" placeholder="✏️ 직접 입력 (자유 주제)"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();addCustom(${ci},this.nextElementSibling);}">
+      <button class="freebtn" onclick="addCustom(${ci},this)">추가</button>
+    </div>`;
+  const chips=sec.querySelector('.chips');
+  cat.list.forEach(word=>{
+    const b=document.createElement('button');
+    b.className='chip'; b.textContent=word;
+    b.onclick=()=>select(ci,word,b);
+    chips.appendChild(b);
+  });
+  catsEl.appendChild(sec);
+});
+
+function addCustom(ci,btn){
+  const inp=btn.previousElementSibling;
+  const w=(inp.value||"").trim();
+  if(!w) return;
+  const chips=catsEl.children[ci].querySelector('.chips');
+  const b=document.createElement('button');
+  b.className='chip custom'; b.textContent=w;
+  b.onclick=()=>select(ci,w,b);
+  chips.appendChild(b);
+  inp.value='';
+  select(ci,w,b);          // 추가하면 바로 선택됨
+}
+
+function chipsOf(ci){return catsEl.children[ci].querySelectorAll('.chip');}
+
+function select(ci,word,btn){
+  chipsOf(ci).forEach(o=>o.classList.remove('sel'));
+  if(picks[ci]===word){ picks[ci]=null; }
+  else { picks[ci]=word; btn.classList.add('sel'); }
+  render();
+}
+
+function toggleLock(ci){
+  locked[ci]=!locked[ci];
+  const sec=catsEl.children[ci];
+  sec.classList.toggle('locked',locked[ci]);
+  sec.querySelector('.lockbtn').textContent=locked[ci]?'🔒 고정':'🔓 열림';
+}
+
+function randomize(){
+  CATS.forEach((cat,ci)=>{
+    if(locked[ci]) return;              // 고정된 칸은 그대로
+    const w=cat.list[Math.floor(Math.random()*cat.list.length)];
+    picks[ci]=w;
+    chipsOf(ci).forEach(o=>o.classList.toggle('sel',o.textContent===w));
+    catsEl.children[ci].querySelector('.chip.sel')?.scrollIntoView({block:'nearest'});
+  });
+  render();
+}
+
+function resetAll(){
+  picks=[null,null,null,null];
+  locked=[false,false,false,false];
+  CATS.forEach((c,ci)=>{
+    const sec=catsEl.children[ci];
+    sec.classList.remove('locked');
+    sec.querySelector('.lockbtn').textContent='🔓 열림';
+    sec.querySelectorAll('.chip.custom').forEach(o=>o.remove());  // 직접 입력한 칩 제거
+    chipsOf(ci).forEach(o=>o.classList.remove('sel'));
+    const inp=sec.querySelector('.freeinp'); if(inp) inp.value='';
+  });
+  render();
+}
+
+function render(){
+  const done=picks.every(p=>p);
+  const pt=document.getElementById('promptText');
+  const work=document.getElementById('workBox');
+  if(!done){
+    pt.className='hint';
+    pt.textContent='네 칸을 모두 고르면 여기에 미션이 나타나요.';
+    work.style.display='none';
+    return;
+  }
+  pt.className='';
+  pt.innerHTML=`<span class="hl1">${picks[0]}</span> × <span class="hl2">${picks[1]}</span>를 결합해서, `+
+    `<span class="hl3">${picks[2]}</span>을(를) 위한 <span class="hl4">${picks[3]}</span>을(를) 기획해 보자!`;
+  document.getElementById('q1').textContent=`"${picks[0]}"에 "${picks[1]}"을(를) 결합하면 어떤 새로운 콘텐츠·서비스가 나올까요? 마구 상상해 보세요.`;
+  document.getElementById('q2').textContent=`"${picks[2]}"이(가) 이걸 왜 좋아하고 필요로 할까요? 그리고 이 아이디어가 사회에 어떤 좋은 영향(도움)을 줄 수 있을지도 적어보세요.`;
+  document.getElementById('q3').textContent=`이미 세상에 있는 비슷한 것과 비교해, 우리 아이디어만의 새롭고 특별한 점은 무엇인가요?`;
+  document.getElementById('q4').textContent=`"${picks[3]}" 방식으로 어떻게 사람들에게 전하고 수익을 낼지, 서비스 이름과 함께 구체적으로 기획해 보세요.`;
+  work.style.display='block';
+}
+</script>
+</body>
+</html>
